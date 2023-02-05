@@ -20,7 +20,7 @@ function Error({ statusCode }) {
     const SEO = PageSEO({
       siteLogo    : "site/logo",
       url         : `${process.env.NEXT_PUBLIC_SITE_URL}/index`,
-      title       : { `Error | ${statusCode}` },
+      title       : `Error | ${statusCode}`,
       description : `Oh no, ${statusCode} Error`
     });
   // SEO
