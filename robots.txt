@@ -1,0 +1,28 @@
+# Allow Google Bots
+User-agent: Googlebot
+Disallow: /cache
+Disallow: /static
+Disallow: /*.json
+Disallow: /*.lock
+Disallow: /*.md
+Disallow: /*.py
+
+User-agent: AdsBot-Google
+Disallow: /cache
+Disallow: /static
+Disallow: /*.json
+Disallow: /*.lock
+Disallow: /*.md
+Disallow: /*.py
+
+User-agent: Googlebot-Image
+Disallow: /cache
+Disallow: /static
+Disallow: /*.json
+Disallow: /*.lock
+Disallow: /*.md
+Disallow: /*.py
+
+# Disallows All Other Bots
+User-agent: *
+Disallow: /

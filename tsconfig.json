@@ -1,20 +1,50 @@
 {
-  "compilerOptions": {
+  "compilerOptions": { 
     "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": true,
+    "strict": false,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
+    "incremental": true,
     "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "incremental": true
+    "baseUrl": "./",
+      "paths": {
+        // Main
+        "@Root/*"                   : ["*"],                                         // Root Directory
+        "@Src/*"                    : ["src/*"],                                     // Src
+        "@Api/*"                    : ["src/pages/api/*"],                           // Api
+        "@Assets/*"                 : ["src/assets/*"],                              // Assets
+        "@Components/*"             : ["src/components/*"],                          // Components
+        "@Database/*"               : ["src/database/*"],                            // Databases
+        "@Pages/*"                  : ["src/pages/*"],                               // Pages
+
+        // Custom
+        "@Images/*"                 : ["src/assets/images/*"],                       // Shortcut to Images
+        "@Functions/*"              : ["src/assets/functions/*"],                    // Shortcut to Functions
+        "@Styles/*"                 : ["src/assets/SCSS/*"],                         // Shortcut to SCSS
+        "@Elements/*"               : ["src/components/elements/*"],                 // Shortcut to Elements
+        "@Modules/*"                : ["src/components/modules/*"],                  // Shortcut to Modules
+        "@npm/*"                    : ["node_modules/*"],                            // For npm Packages
+      }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx", 
+    "headers.js"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

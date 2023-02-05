@@ -1,0 +1,55 @@
+// Default Color Palette
+  // Light Theme
+  $light-primary:       hsl(323, 73%, 22%) !default;
+  $light-secondary:     hsl(349, 96%, 31%) !default;
+  $light-tertiary:      hsl(29, 96%, 56%)  !default;
+  $light-font-primary:  hsl(23, 84%, 48%)  !default;
+  $light-font-secondary:hsl(192, 72%, 21%) !default;
+
+  // Dark Theme
+  $dark-primary:        hsl(215, 26%, 24%) !default;
+  $dark-secondary:      hsl(206, 59%, 44%) !default;
+  $dark-tertiary:       hsl(206, 70%, 12%) !default;
+  $dark-font-primary:   hsl(0, 0%, 100%)   !default;
+  $dark-font-secondary: hsl(10, 72%, 50%)  !default;
+// Default Color Palette
+
+
+// Auto Class Generator ('@npm/full-steck-tools')
+  $auto-class-generator:(
+    // Defaults
+    'light-primary'        :  $light-primary,
+    'light-secondary'      :  $light-secondary,
+    'light-tertiary'       :  $light-tertiary,
+    'light-font-primary'   :  $light-font-primary,
+    'light-font-secondary' :  $light-font-secondary,
+    
+    'dark-primary'         :  $dark-primary,
+    'dark-secondary'       :  $dark-secondary,
+    'dark-tertiary'        :  $dark-tertiary,
+    'dark-font-primary'    :  $dark-font-primary,
+    'dark-font-secondary'  :  $dark-font-secondary,
+
+    // Change Color on Theme
+    'primary':(
+      'light' : $light-primary,
+      'dark'  : $dark-primary,
+    ),
+    'secondary':(
+      'light' : $light-secondary,
+      'dark'  : $dark-secondary,
+    ),
+    'tertiary':(
+      'light' : $light-tertiary,
+      'dark'  : $dark-tertiary,
+    ),
+  );
+// Auto Class Generator
+
+
+
+
+
+
+
+
