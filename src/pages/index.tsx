@@ -84,7 +84,7 @@ export default function Home() {
               if ( cssIsClass(currClassName) ){
                 let style = {
                   label     : `${currClassName}`,
-                  value     : currClassName,
+                  value     : currClassName.split('.')[1]
                 }
 
                 // Place created attribute obj into specific dropdown option
@@ -103,7 +103,7 @@ export default function Home() {
             if ( cssIsClass(currClassName) ){
               let style = {
                 label     : `${currClassName}`,
-                value     : currClassName,
+                value     : currClassName.split('.')[1],
               }
 
               // Place created attribute obj into specific dropdown option
@@ -143,7 +143,10 @@ export default function Home() {
 
     if (option && option.value) {
       
-      // console.log(option);
+      setStyleLabel(option.label);
+      setStyleValue(option.value);
+
+      document.getElementById('element-to-change').className = option.value;
 
     }
 
@@ -155,45 +158,61 @@ export default function Home() {
       <LogoJsonLd {...SEO.LogoJsonLd} />
       <NextSeo {...SEO.DefaultSeo} />
 
+      <div className='grid-container'>
 
-      <Autocomplete
-        disablePortal
-        disableClearable
-        id="selection-category-search"
-        className='grid'
-        size={"small"}
-        value={styleLabel} // <- For Display
-        onChange={handleStyleChange} // click on the show tags
-        options={setStyleDropdownOptions()}
-        sx={{ width: 'clamp(185px, 30vw, 450px) !important', margin: 'auto' }}
+        <div className='grid shadow-3-theme' style={{ borderRadius:'18px', padding:'18px'}}>
 
-        renderInput={(params) => (
-          <TextField {...params} label={`Selected Style`} margin="normal" />
-        )}
+          <div id='element-to-change' className='flex-container-wrap-success'
+            style={{ transition:'250ms' }}>
+            <p>Watch</p>
+            <p>Me</p>
+            <p>Change</p>
+          </div>
+        </div>
 
-        renderOption={(props, option, { inputValue }) => {
-          const matches = match(option.label, inputValue, { insideWords: true });
-          const parts   = parse(option.label, matches);
+        <div className='position-fixed-bottom-middle bg-white' style={{ borderRadius: '18px', padding:'12px', zIndex:'999'}}>
+    
+          <Autocomplete
+            disablePortal
+            disableClearable
+            id="selection-category-search"
+            className='grid'
+            size={"small"}
+            value={styleLabel} // <- For Display
+            onChange={handleStyleChange} // click on the show tags
+            options={setStyleDropdownOptions()}
+            sx={{ width: 'clamp(185px, 30vw, 450px) !important', margin: 'auto' }}
 
-          return (
-            <li {...props}>
-              <div>
-                {parts.map((part, index) => (
-                  <span
-                    key={index}
-                    style={{
-                      fontWeight: part.highlight ? 700 : 400,
-                    }}
-                  >
-                    {part.text}
-                  </span>
-                ))}
-              </div>
-            </li>
-          );
-        }}
-      />
+            renderInput={(params) => (
+              <TextField {...params} label={`Selected Style`} margin="normal" />
+            )}
 
+            renderOption={(props, option, { inputValue }) => {
+              const matches = match(option.label, inputValue, { insideWords: true });
+              const parts   = parse(option.label, matches);
+
+              return (
+                <li {...props}>
+                  <div>
+                    {parts.map((part, index) => (
+                      <span
+                        key={index}
+                        style={{
+                          fontWeight: part.highlight ? 700 : 400,
+                        }}
+                      >
+                        {part.text}
+                      </span>
+                    ))}
+                  </div>
+                </li>
+              );
+            }}
+          />
+
+        </div>
+
+      </div>
       
     </>
   );
