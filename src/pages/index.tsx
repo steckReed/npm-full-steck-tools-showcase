@@ -20,8 +20,8 @@ export default function Home() {
   const [fullListOfStyles     , setFullListOfStyles]      = useState([]);
 
   // Styles Dropdown
-  const [styleLabel           , setStyleLabel]            = useState("");
-  const [styleValue           , setStyleValue]            = useState("");
+  const [styleLabel           , setStyleLabel]            = useState([]);
+  const [styleValue           , setStyleValue]            = useState([]);
 
 
   function cssIsClass(str) {
@@ -82,9 +82,10 @@ export default function Home() {
               currClassName       = (cssClassHasSelector(currClassNameSplit)) ? cssStripSelector(currClassNameSplit) : currClassNameSplit;
               
               if ( cssIsClass(currClassName) ){
+                currClassName = currClassName.split('.')[1]
                 let style = {
                   label     : `${currClassName}`,
-                  value     : currClassName.split('.')[1]
+                  value     : (currClassName.includes('btn')) ? `btn ${currClassName}` : currClassName,
                 }
 
                 // Place created attribute obj into specific dropdown option
@@ -101,9 +102,10 @@ export default function Home() {
             currClassName = (cssClassHasSelector(currClassName)) ? cssStripSelector(currClassName) : currClassName;
 
             if ( cssIsClass(currClassName) ){
+              currClassName = currClassName.split('.')[1]
               let style = {
                 label     : `${currClassName}`,
-                value     : currClassName.split('.')[1],
+                value     : (currClassName.includes('btn')) ? `btn ${currClassName}` : currClassName,
               }
 
               // Place created attribute obj into specific dropdown option
@@ -124,11 +126,10 @@ export default function Home() {
   };
 
   
+  // Handle Init Load of dropdown pre-selected
   useEffect(() => {
     // Styles
     if (fullListOfStyles) {
-      
-
       // // Styles Dropdown
       // setStyleLabel        (fullListOfStyles[0]['selectorText'])
       // setStyleValue        (fullListOfStyles[0]['selectorText'])
@@ -138,18 +139,14 @@ export default function Home() {
 
 
 
+  useEffect(() => {
+    document.getElementById('element-to-change').className = styleValue.toString();
+  })
+
   // Handles change of dropdown Style selection
   function handleStyleChange(event, option) {
-
-    if (option && option.value) {
-      
-      setStyleLabel(option.label);
-      setStyleValue(option.value);
-
-      document.getElementById('element-to-change').className = option.value;
-
-    }
-
+      setStyleLabel((option[0]) ? option.map(({ label }) => label).join(' ').trim() : '');
+      setStyleValue((option[0]) ? option.map(({ value }) => value).join(' ').trim() : '');
   }
 
 
@@ -158,30 +155,31 @@ export default function Home() {
       <LogoJsonLd {...SEO.LogoJsonLd} />
       <NextSeo {...SEO.DefaultSeo} />
 
-      <div className='grid-container'>
+      <div className='grid-container bg-offset'>
 
-        <div className='grid shadow-3-theme' style={{ borderRadius:'18px', padding:'18px'}}>
+        <div className='grid bg-white shadow-3-theme-alt' 
+          style={{ borderRadius:'18px', padding:'18px', width: 'clamp(185px, 70vw, 550px) !important'}}>
 
-          <div id='element-to-change' className='flex-container-wrap-success'
+          <div id='element-to-change' className=''
             style={{ transition:'250ms' }}>
-            <p>Watch</p>
-            <p>Me</p>
-            <p>Change</p>
+            <p>Full</p>
+            <p>Steck</p>
+            <p>Tools</p>
           </div>
         </div>
 
-        <div className='position-fixed-bottom-middle bg-white' style={{ borderRadius: '18px', padding:'12px', zIndex:'999'}}>
+        <div className='position-fixed-bottom-middle bg-white shadow-1-theme-alt' style={{ borderRadius: '18px', padding:'12px', zIndex:'999'}}>
     
           <Autocomplete
+            multiple
             disablePortal
-            disableClearable
             id="selection-category-search"
-            className='grid'
+            className='grid mini-autocomplete'
             size={"small"}
-            value={styleLabel} // <- For Display
+            value={styleLabel[0]} // <- For Display
             onChange={handleStyleChange} // click on the show tags
             options={setStyleDropdownOptions()}
-            sx={{ width: 'clamp(185px, 30vw, 450px) !important', margin: 'auto' }}
+            sx={{ width: 'clamp(185px, 70vw, 550px) !important', margin: 'auto' }}
 
             renderInput={(params) => (
               <TextField {...params} label={`Selected Style`} margin="normal" />

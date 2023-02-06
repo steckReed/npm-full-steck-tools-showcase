@@ -1,13 +1,12 @@
 @import './color-palette.scss';
 @import '@npm/full-steck-tools/sassy/_-fs-mixins.scss';
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 
 // Next JS Default Styles
   html,
   body {
     padding: 0;
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-      Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   }
 
   a {
@@ -17,6 +16,20 @@
 
   * {
     box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif !important;
   }
 
 // Next JS Default Styles
+
+
+// .mini-autocomplete{
+//   width: 10px;
+//   transition: 300ms;
+
+//   &:hover,
+//   &:active,
+//   &:focus{
+//     width: clamp(185px, 70vw, 550px) !important; 
+//     // margin: 'auto';
+//   }
+// }
