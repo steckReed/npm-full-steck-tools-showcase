@@ -1,3 +1,4 @@
+import styles from '@Styles/_index.module.scss';
 import { LogoJsonLd, NextSeo } from "next-seo";
 import { PageSEO } from "@Assets/functions/SEO";
 import { Autocomplete, TextField } from '@mui/material';
@@ -155,10 +156,9 @@ export default function Home() {
       <LogoJsonLd {...SEO.LogoJsonLd} />
       <NextSeo {...SEO.DefaultSeo} />
 
-      <div className='grid-container bg-offset'>
+      <div className='grid-container bg-background'>
 
-        <div className='grid bg-white shadow-3-theme-alt' 
-          style={{ borderRadius:'18px', padding:'18px', width: 'clamp(185px, 70vw, 550px) !important'}}>
+        <div className={`grid bg-background shadow-3-theme-alt ${styles['element-to-change-container']} `}>
 
           <div id='element-to-change' className=''
             style={{ transition:'250ms' }}>
