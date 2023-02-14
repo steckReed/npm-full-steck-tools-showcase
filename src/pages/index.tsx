@@ -197,7 +197,7 @@ export default function Home() {
               <TextField {...params} label={`Selected Style(s)`} margin="normal" />
             )}
             renderGroup={(params) => (
-              <li key={params.key}>
+              <li key={params.key} style={{ marginTop: '-8px'}}>
                 <div className='bg-offset' style={{ position:'sticky', top:'-8px', padding:'8px 10px', fontSize:'1.05rem' }}>{params.group}</div>
                 <div>{params.children}</div>
               </li>
