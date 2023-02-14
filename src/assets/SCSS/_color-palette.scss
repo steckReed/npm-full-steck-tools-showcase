@@ -1,5 +1,6 @@
 // Default Color Palette
   // Light Theme
+  $light-background:    hsl(0, 0%, 100%);
   $light-primary:       hsl(323, 73%, 22%) !default;
   $light-secondary:     hsl(349, 96%, 31%) !default;
   $light-tertiary:      hsl(29, 96%, 56%)  !default;
@@ -7,6 +8,7 @@
   $light-font-secondary:hsl(192, 72%, 21%) !default;
 
   // Dark Theme
+  $dark-background:     hsl(0, 0%, 10%);
   $dark-primary:        hsl(215, 26%, 24%) !default;
   $dark-secondary:      hsl(206, 59%, 44%) !default;
   $dark-tertiary:       hsl(206, 70%, 12%) !default;
@@ -18,12 +20,14 @@
 // Auto Class Generator ('@npm/full-steck-tools')
   $auto-class-generator:(
     // Defaults
+    'light-background'     :  $light-background,
     'light-primary'        :  $light-primary,
     'light-secondary'      :  $light-secondary,
     'light-tertiary'       :  $light-tertiary,
     'light-font-primary'   :  $light-font-primary,
     'light-font-secondary' :  $light-font-secondary,
     
+    'dark-background'      :  $dark-background,
     'dark-primary'         :  $dark-primary,
     'dark-secondary'       :  $dark-secondary,
     'dark-tertiary'        :  $dark-tertiary,
@@ -31,6 +35,10 @@
     'dark-font-secondary'  :  $dark-font-secondary,
 
     // Change Color on Theme
+    'background':(
+      'light' : $light-background,
+      'dark'  : $dark-background,
+    ),
     'primary':(
       'light' : $light-primary,
       'dark'  : $dark-primary,
