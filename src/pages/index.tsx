@@ -24,7 +24,7 @@ export default function Home() {
   const [styleLabel           , setStyleLabel]            = useState([]);
   const [styleValue           , setStyleValue]            = useState([]);
 
-
+  
   function cssIsClass(str) {
     return (str.includes('.'))
   }
@@ -126,7 +126,15 @@ export default function Home() {
     return styleList;
   };
 
-  
+  const options = setStyleDropdownOptions().map((option) => {
+    const firstLetter = option.label[0].toUpperCase();
+    return {
+      firstLetter: /[0-9]/.test(firstLetter) ? '0-9' : firstLetter,
+      ...option,
+    };
+  }).sort((a, b) => -b.firstLetter.localeCompare(a.firstLetter));
+
+
   // Handle Init Load of dropdown pre-selected
   useEffect(() => {
     // Styles
@@ -168,7 +176,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className='position-fixed-bottom-middle bg-white shadow-1-theme-alt' style={{ borderRadius: '18px', padding:'12px', zIndex:'999'}}>
+        <div className='position-fixed-bottom-middle bg-white shadow-5-theme-alt' style={{ borderRadius: '18px', padding:'12px', zIndex:'999'}}>
     
           <Autocomplete
             multiple
@@ -178,19 +186,28 @@ export default function Home() {
             size={"small"}
             value={styleLabel[0]} // <- For Display
             onChange={handleStyleChange} // click on the show tags
-            options={setStyleDropdownOptions()}
+            // options={setStyleDropdownOptions()}
+            options         = {options}
+            groupBy         = {(option) => option.firstLetter}
+            getOptionLabel  = {(option) => option.label}
+            
             sx={{ width: 'clamp(185px, 70vw, 550px) !important', margin: 'auto' }}
 
             renderInput={(params) => (
-              <TextField {...params} label={`Selected Style`} margin="normal" />
+              <TextField {...params} label={`Selected Style(s)`} margin="normal" />
             )}
-
+            renderGroup={(params) => (
+              <li key={params.key}>
+                <div className='bg-offset' style={{ position:'sticky', top:'-8px', padding:'8px 10px', fontSize:'1.05rem' }}>{params.group}</div>
+                <div>{params.children}</div>
+              </li>
+            )}
             renderOption={(props, option, { inputValue }) => {
               const matches = match(option.label, inputValue, { insideWords: true });
               const parts   = parse(option.label, matches);
 
               return (
-                <li {...props}>
+                <li {...props} className={`${styles['renderOption-container']} hover-shadow-2-black`}>
                   <div>
                     {parts.map((part, index) => (
                       <span

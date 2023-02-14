@@ -5,3 +5,12 @@
   resize: both;
   overflow: auto;
 }
+
+.renderOption-container{
+  border-radius: 8px;
+  padding: 8px 5px;
+  &:hover{
+    transition:250ms;
+    cursor: pointer;
+  }
+}
