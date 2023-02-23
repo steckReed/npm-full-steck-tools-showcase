@@ -5,6 +5,7 @@ import { Autocomplete, TextField } from '@mui/material';
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 
 export default function Home() {
   // SEO
@@ -164,16 +165,19 @@ export default function Home() {
       <LogoJsonLd {...SEO.LogoJsonLd} />
       <NextSeo {...SEO.DefaultSeo} />
 
-      <div className='grid-container bg-background'>
+      <div className={`grid-container bg-background `}>
 
-        <div className={`grid bg-background shadow-3-theme-alt ${styles['element-to-change-container']} `}>
 
+        <div className={`grid bg-background shadow-3-theme-alt 
+                        ${styles['resizable-container']} ${styles['element-to-change-container']} `}>
+          
           <div id='element-to-change' className=''
             style={{ transition:'250ms' }}>
             <p>Full</p>
             <p>Steck</p>
             <p>Tools</p>
           </div>
+
         </div>
 
         <div className='position-fixed-bottom-middle bg-white shadow-5-theme-alt' style={{ borderRadius: '18px', padding:'12px', zIndex:'999'}}>
@@ -197,7 +201,7 @@ export default function Home() {
               <TextField {...params} label={`Selected Style(s)`} margin="normal" />
             )}
             renderGroup={(params) => (
-              <li key={params.key} style={{ marginTop: '-8px'}}>
+              <li key={params.key} style={{ marginTop: '-8px', zIndex:'10'}}>
                 <div className='bg-offset' style={{ position:'sticky', top:'-8px', padding:'8px 10px', fontSize:'1.05rem' }}>{params.group}</div>
                 <div>{params.children}</div>
               </li>
@@ -207,20 +211,28 @@ export default function Home() {
               const parts   = parse(option.label, matches);
 
               return (
-                <li {...props} className={`${styles['renderOption-container']} hover-shadow-2-black`}>
-                  <div>
-                    {parts.map((part, index) => (
-                      <span
-                        key={index}
-                        style={{
-                          fontWeight: part.highlight ? 700 : 400,
-                        }}
-                      >
-                        {part.text}
-                      </span>
-                    ))}
-                  </div>
-                </li>
+                <motion.div 
+                  // whileHover={{ y: '-2px'}}
+                  whileTap={{ 
+                    y:'2px', 
+                    scale:'0.995',
+                    transition: { duration: 0.15 },
+                  }}>
+                  <li {...props} className={`${styles['renderOption-container']} hover-shadow-2-black`}>
+                    <div>
+                      {parts.map((part, index) => (
+                        <span
+                          key={index}
+                          style={{
+                            fontWeight: part.highlight ? 700 : 400,
+                          }}
+                        >
+                          {part.text}
+                        </span>
+                      ))}
+                    </div>
+                  </li>
+                </motion.div>
               );
             }}
           />
