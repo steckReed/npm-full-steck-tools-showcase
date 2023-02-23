@@ -1,9 +1,8 @@
 .element-to-change-container{
   border-radius: 18px 18px 0px 18px;
+  height: 98vh;
+  width: 95vw;
   padding: 18px;
-  // width: clamp(185px, 70vw, 550px) !important;
-  resize: both;
-  overflow: auto;
 }
 
 .renderOption-container{
@@ -13,4 +12,9 @@
     transition:250ms;
     cursor: pointer;
   }
+}
+
+.resizable-container{
+  resize: both;
+  overflow: auto;
 }
