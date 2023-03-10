@@ -1,11 +1,15 @@
 import styles from '@Styles/_index.module.scss';
 import { LogoJsonLd, NextSeo } from "next-seo";
 import { PageSEO } from "@Assets/functions/SEO";
-import { Autocomplete, TextField } from '@mui/material';
+import { Autocomplete, SpeedDial, SpeedDialAction, SpeedDialIcon, TextField, Tooltip } from '@mui/material';
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
+import Box from '@mui/material/Box';
+
+import FileCopyIcon from '@mui/icons-material/FileCopyOutlined';
+
 
 export default function Home() {
   // SEO
@@ -18,14 +22,36 @@ export default function Home() {
     });
   // SEO
 
+  const actions = [
+    { icon: <FileCopyIcon />, name: 'Copy' },
+  ];
+
   // Full (unsorted) List of Styles
-  const [fullListOfStyles     , setFullListOfStyles]      = useState([]);
+  const fullListOfStyles = useMemo(() => {
+    if (typeof window !== "undefined") {
+      // If client window loaded
+
+      // Get all styles within stylesheet
+      const documentStyleSheets = document.styleSheets;
+
+      for (let i = 0; i < documentStyleSheets.length; i++){
+        
+        // Very poor way of checking for specific stylesheet....
+        if (documentStyleSheets[i].cssRules.length > 7000) {
+          return([documentStyleSheets[i].cssRules])
+        }
+
+
+      }
+    }
+  },[]);
 
   // Styles Dropdown
   const [styleLabel           , setStyleLabel]            = useState([]);
   const [styleValue           , setStyleValue]            = useState([]);
 
   
+
   function cssIsClass(str) {
     return (str.includes('.'))
   }
@@ -38,27 +64,19 @@ export default function Home() {
     return (str.split(':')[0]);
   }
 
-  
-
-  // If client window loaded
-  if (typeof window !== "undefined") {
-
-    // Get all styles within stylesheet
-    if (fullListOfStyles.length == 0) {
-      const documentStyleSheets = document.styleSheets;
-
-      for (let i = 0; i < documentStyleSheets.length; i++){
-        
-        // Very poor way of checking for specific stylesheet....
-        if (documentStyleSheets[i].cssRules.length > 7000) {
-          setFullListOfStyles([documentStyleSheets[i].cssRules])
-        }
-
-
-      }
+  function getClassNameDesc(className){
+    if (className.includes('active')){
+      return('Click on Element to View Changes');
     }
 
+    if (className.includes('hover')) {
+      return ('Move Cursor Over Element to View Changes');
+    }
+
+    return ('')
   }
+
+  
 
 
   // Sets list of Styles to display to user within selection dropdown
@@ -66,8 +84,8 @@ export default function Home() {
     let styleList = [];
 
   
-    if (fullListOfStyles[0]){
-
+    if (fullListOfStyles && fullListOfStyles[0]){
+      
       Object.values(fullListOfStyles[0]).map(key => {
         let currClassName = key['selectorText'];
 
@@ -108,6 +126,7 @@ export default function Home() {
               let style = {
                 label     : `${currClassName}`,
                 value     : (currClassName.includes('btn')) ? `btn ${currClassName}` : currClassName,
+                desc      : getClassNameDesc(currClassName)
               }
 
               // Place created attribute obj into specific dropdown option
@@ -127,7 +146,9 @@ export default function Home() {
     return styleList;
   };
 
-  const options = setStyleDropdownOptions().map((option) => {
+
+  const styleDropdownOptions  = setStyleDropdownOptions();
+  const options               = styleDropdownOptions.map((option) => {
     const firstLetter = option.label[0].toUpperCase();
     return {
       firstLetter: /[0-9]/.test(firstLetter) ? '0-9' : firstLetter,
@@ -135,6 +156,7 @@ export default function Home() {
     };
   }).sort((a, b) => -b.firstLetter.localeCompare(a.firstLetter));
 
+  
 
   // Handle Init Load of dropdown pre-selected
   useEffect(() => {
@@ -180,17 +202,36 @@ export default function Home() {
 
         </div>
 
+        
+
         <div className='position-fixed-bottom-middle bg-white shadow-5-theme-alt' style={{ borderRadius: '18px', padding:'12px', zIndex:'999'}}>
     
+
+          {/* <Box sx={{ height: 320, transform: 'translateZ(0px)', flexGrow: 1 }}>
+            <SpeedDial
+              ariaLabel="SpeedDial basic example"
+              sx={{ position: 'absolute', bottom: 16, right: 16 }}
+              icon={<SpeedDialIcon />}
+            >
+              {actions.map((action) => (
+                <SpeedDialAction
+                  key={action.name}
+                  icon={action.icon}
+                  tooltipTitle={action.name}
+                />
+              ))}
+            </SpeedDial>
+          </Box> */}
+
+
           <Autocomplete
             multiple
             disablePortal
-            id="selection-category-search"
-            className='grid mini-autocomplete'
-            size={"small"}
-            value={styleLabel[0]} // <- For Display
-            onChange={handleStyleChange} // click on the show tags
-            // options={setStyleDropdownOptions()}
+            id              = "selection-category-search"
+            className       = 'grid mini-autocomplete'
+            size            = {"small"}
+            value           = {styleLabel[0]}     // <- For Display
+            onChange        = {handleStyleChange} // click on the show tags
             options         = {options}
             groupBy         = {(option) => option.firstLetter}
             getOptionLabel  = {(option) => option.label}
@@ -200,40 +241,48 @@ export default function Home() {
             renderInput={(params) => (
               <TextField {...params} label={`Selected Style(s)`} margin="normal" />
             )}
+            
             renderGroup={(params) => (
               <li key={params.key} style={{ marginTop: '-8px', zIndex:'10'}}>
                 <div className='bg-offset' style={{ position:'sticky', top:'-8px', padding:'8px 10px', fontSize:'1.05rem' }}>{params.group}</div>
                 <div>{params.children}</div>
               </li>
             )}
+
             renderOption={(props, option, { inputValue }) => {
               const matches = match(option.label, inputValue, { insideWords: true });
               const parts   = parse(option.label, matches);
 
               return (
-                <motion.div 
-                  // whileHover={{ y: '-2px'}}
-                  whileTap={{ 
-                    y:'2px', 
-                    scale:'0.995',
-                    transition: { duration: 0.15 },
-                  }}>
-                  <li {...props} className={`${styles['renderOption-container']} hover-shadow-2-black`}>
-                    <div>
-                      {parts.map((part, index) => (
-                        <span
-                          key={index}
-                          style={{
-                            fontWeight: part.highlight ? 700 : 400,
-                          }}
-                        >
-                          {part.text}
-                        </span>
-                      ))}
-                    </div>
-                  </li>
-                </motion.div>
-              );
+              <>
+                    
+                    <motion.div 
+                      // whileHover={{ y: '-2px'}}
+                      whileTap={{ 
+                        y:'2px', 
+                        scale:'0.995',
+                        transition: { duration: 0.15 },
+                    }}>
+                      <li {...props} className={`${styles['renderOption-container']} hover-shadow-2-black`}>
+                        <div>
+
+                          {parts.map((part, index) => (
+                            <Tooltip title={''} placement="left">
+                              <span
+                                key   = { index }
+                                style = {{ fontWeight: part.highlight ? 700 : 400 }}
+                              >
+                                {part.text}
+                              </span>
+                            </Tooltip>
+                          ))}
+
+                        </div>
+                      </li>
+                    </motion.div>
+
+                
+              </>);
             }}
           />
 
